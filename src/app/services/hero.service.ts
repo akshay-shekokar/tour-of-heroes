@@ -3,16 +3,17 @@ import { Observable, of } from 'rxjs';
 import { HEROES } from 'src/dummy-data/heroes';
 import { Hero } from 'src/interfaces/hero';
 import { MessageService } from './message.service';
-
+import { HttpClient } from "@angular/common/http";
 @Injectable({
   providedIn: 'root',
 })
 export class HeroService {
-  constructor(private messageService: MessageService) {}
+  private api = 'api/heroes';
+  constructor(private messageService: MessageService, private httpClient: HttpClient) {}
 
   getHeroes(): Observable<Hero[]> {
     this.messageService.add('HeroService: fetched heroes');
-    return of(HEROES);
+    return this.httpClient.get<Hero[]>(this.api);
   }
 
   getHero(id: any): Observable<Hero | undefined> {
